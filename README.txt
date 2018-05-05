@@ -1,5 +1,5 @@
-Camper Leaderboard
-=======
+#Camper Leaderboard
+
 
 Built using a [freeCodeCamp API](https://www.freecodecamp.org/challenges/build-a-camper-leaderboard), React and Sass
 
