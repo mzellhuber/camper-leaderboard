@@ -1,0 +1,94 @@
+
+const API = 'https://fcctop100.herokuapp.com/api/fccusers/top/';
+
+  var App = React.createClass({
+ 	
+  getInitialState:function() {
+ 		return{
+ 			data:[]
+ 		}
+ 	},
+    
+    reQuery:function(value){
+      fetch(API + value)
+        .then(response => response.json())
+        .then(data => this.setState({ data: data}));
+      //console.log(this.state)
+    },
+    
+ 	componentDidMount: function () {
+	    console.log("fetch")
+	    fetch(API + 'recent')
+      .then(response => response.json())
+      .then(data => this.setState({ data: data}));
+
+	  },
+ 	render:function() {
+ 		return(
+ 			<div>
+        <Header/>
+ 				<Table data={this.state.data} reQuery={this.reQuery}/>
+ 			</div>
+ 		);
+ 	}
+
+  })
+
+   var Header = React.createClass({
+     render:function() {
+      return(
+        <div>
+           <h1>Camper leaderboard</h1>
+        </div>
+      )}
+  });
+
+  var Table = React.createClass({ 
+    reQuery:function(value){
+      this.props.reQuery(value)
+      console.log(value)
+      
+      if(value==="recent"){
+        console.log("class")
+        $('#alltime').removeClass('sorted true')
+        $('#recent').addClass('sorted true')
+      }else{
+        $('#recent').removeClass('sorted true')
+        $('#alltime').addClass('sorted true')
+      }
+      
+      
+    },
+    
+    getUserUrl:function(camper){
+      var username=`https://www.freecodecamp.com/${camper.username}`
+      return username
+    },
+    
+    render:function() {
+      return(
+        <div className="col-md-12">
+          <table className="table table-striped">
+            <tr>
+              <th className="idcol text-center">#</th>
+              <th className="text-center">Camper Name</th> 
+              <th id="defaultsort" className="sortable sorted true text-center" id="recent"><a href="#" onClick={() => {this.reQuery('recent')}}>Past 30 days</a></th>
+              <th className="sortable text-center" id="alltime"><a href="#" onClick={() => {this.reQuery('alltime')}}>All time points</a></th>
+            </tr>
+            {
+              this.props.data.map((camper, i) =>
+                                <tr>
+                                  <td className="text-center">{i+1}</td>
+                                  <td><img src={camper.img} className="userImg"/><a href={this.getUserUrl(camper)} target="_blank">{camper.username}</a></td> 
+                                  <td className="text-center">{camper.recent}</td>
+                                   <td className="text-center">{camper.alltime}</td>
+                                </tr>
+                              )} 
+            
+          </table>
+          
+        </div>
+      )}
+  });
+
+React.render(<App/>,document.getElementById("container"));

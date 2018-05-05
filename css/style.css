@@ -1,0 +1,18 @@
+@charset "UTF-8";
+.userImg {
+  width: 40px;
+  border: 2px solid #006400;
+  border-radius: 4px;
+  max-height: 40px;
+  margin-right: 4px;
+}
+
+.sorted.false:after {
+  content: " ▲";
+  font-size: 14px;
+}
+
+.sorted.true:after {
+  content: " ▼";
+  font-size: 14px;
+}
